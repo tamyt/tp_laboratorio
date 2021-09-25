@@ -42,7 +42,7 @@ int dividir(int operando1, int operando2, float* resultado);
 /// @fn int sacarFactorial(int, int*)
 /// @brief saca el factorial de operando
 /// @param int operando,operando del que sacamos el factorial.
-/// @param nt* resultado, puntero al espacio de memoria donde se dejara  el valor obtenido.
+/// @param int* resultado, puntero al espacio de memoria donde se dejara  el valor obtenido.
 /// @return (-1) Error / (0) Ok
 int sacarFactorial(int operando, int* resultado);
 

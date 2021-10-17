@@ -88,28 +88,31 @@ int addEmployeeForced(Employee* list, int len, int id, char name[],char lastName
  *  free space] - (0) if Ok
  *
  */
-int addEmployee(Employee* list, int len, int* id)/// terminar de modificar
+int addEmployee(Employee* list, int len, int* id)
 {
     int retorno = -1;
     int index;
+    int retornoInit;
 	Employee bufferEmployee;
-    index = getEmptyPosition(list, len);
-	if(list != NULL && len > 0 && index < len && index >= 0 && id != NULL)
-	{
-		if(utn_getCadena(bufferEmployee.name, NAME, "Ingrese el nombre\n","\nERROR\n",2) == 0 &&
-			utn_getCadena(bufferEmployee.lastName, NAME, "Ingrese el apellido\n","\nERROR\n",2) == 0 &&
-			utn_getNumeroFlotante(&bufferEmployee.salary,"Ingrese el salario\n","\nERROR\n",10000,70000,2) == 0 &&
-			utn_getNumero(&bufferEmployee.sector,"Ingrese el sector\n","ERROR\n",2,1000,2)== 0)
-		{
-			bufferEmployee.id = *id;
-			bufferEmployee.isEmpty = FALSE;
-			list[index] = bufferEmployee;
-			(*id)++;
-			retorno = 0;
-		}
-
+	retornoInit = initEmployees(list, len);
+	if(retornoInit == 0){
+        index = getEmptyPosition(list, len);
+    	if(list != NULL && len > 0 && index < len && index >= 0 && id != NULL)
+    	{
+    		if(utn_getCadena(bufferEmployee.name, NAME, "Ingrese el nombre\n","\nERROR\n",2) == 0 &&
+    			utn_getCadena(bufferEmployee.lastName, NAME, "Ingrese el apellido\n","\nERROR\n",2) == 0 &&
+    			utn_getNumeroFlotante(&bufferEmployee.salary,"Ingrese el salario\n","\nERROR\n",10000,70000,2) == 0 &&
+    			utn_getNumero(&bufferEmployee.sector,"Ingrese el sector\n","ERROR\n",1,10,2)== 0)
+    		{
+    			bufferEmployee.id = *id;
+    			bufferEmployee.isEmpty = FALSE;
+    			list[index] = bufferEmployee;
+    			(*id)++;
+    			retorno = 0;
+    		}
+    	}
 	}
-    return retorno;
+	return retorno;
 }
 
 /** \brief find an Employee by Id en returns the index position in array.
@@ -215,12 +218,12 @@ int printEmployees(Employee* list, int len)
     int retorno = -1;
     if(list != NULL && len > 0){
        printf("\n\t\t\tEmployees\n\n");
-       printf("Id\t\tName\t\tLast name\t\tSalary\t\tSector\n");
+       printf("\tId\t\tName\t\tLast name\t\tSalary\t\tSector\n");
        printf("----------------------------------------------------------------------------------------------------------------\n");
        for(int i = 0;i < len;i++){
-            if(list[i].isEmpty == 0){
-                fflush(stdin);
-                printf("%8d- \t\t%s\t%8s-\t%2.f - \t%8d\n", list[i].id,
+            if(list[i].isEmpty == FALSE){
+                fflush(stdin);//fflush
+                printf("%8d- \t\t%s\t\t%8s-\t\t%2.f - \t%8d\n", list[i].id,
         	    list[i].name, list[i].lastName,list[i].salary, list[i].sector);
                 retorno = 0;
             }
@@ -265,31 +268,22 @@ indicate UP or DOWN order
  * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
  *
  */
-int sortEmployees(Employee* list, int len, int order)// agregar el order-------------
+int sortEmployees(Employee* list, int len, int order)
 {
     int retorno = -1;
     Employee bufferEmployee;
     if(list != NULL && len > 0 && (order == 0 || order == 1)){
         for(int i = 0;i<len-1;i++){
-            for(int j = i + 1;j < len;j++){/// 1 ascendente(Coro, Tugues)
-                if(((strncmp(list[i].lastName, list[j].lastName, NAME) > 0 && order == 1)|| //----------fijarse de usar strncmp
+            for(int j = i + 1;j < len;j++){
+                if(((strncmp(list[i].lastName, list[j].lastName, NAME) > 0 && order == 1)||
                 (strncmp(list[i].lastName, list[j].lastName, NAME) == 0 && order == 1 && list[i].sector > list[j].sector)) ||
-                  ((strncmp(list[i].lastName, list[j].lastName, NAME) < 0 && order == 0)|| //----------fijarse de usar strncmp
+                  ((strncmp(list[i].lastName, list[j].lastName, NAME) < 0 && order == 0)||
                     (strncmp(list[i].lastName, list[j].lastName, NAME) == 0 && order == 0 && list[i].sector < list[j].sector))){
                     bufferEmployee = list[i];
                     list[i] = list[j];
                     list[j] = bufferEmployee;
                     retorno = 0;
                 }
-                /*else{// 0 descendente
-                    if((strcmp(list[i].lastName, list[j].lastName) < 0 && order = 1)|| //----------fijarse de usar strncmp
-                    (strcmp(list[i].lastName, list[j].lastName) == 0 && order = 1 && list[i].sector < list[j].sector)){
-                        avionAux = array[i];
-                        array[i] = array[j];
-                        array[j] = avionAux;
-                        retorno = 0;
-                    }
-                }*/ //---------------- borrar
             }
         }
     }
@@ -314,7 +308,7 @@ int getTotalAndAverageSalaries(Employee* list, int len, float* acum, float* prom
 }
 
 int informEmployeesAndAverageSalary(Employee* list, int len){
-	int retorno = -1;
+    int retorno = -1;
     int rta;
     int order;
     float acum;
@@ -342,8 +336,8 @@ int informEmployeesAndAverageSalary(Employee* list, int len){
                 case 2:
                     printf("Ud. ha seleccionado la opción 2.Total y promedio de los salarios, y cuántos empleados superan el salario promedio.\n\n");
                     if(getTotalAndAverageSalaries(list,len, &acum, &promSalaries, &contPromEmployees) == 0){
-                        printf("El total de los salarios es %f.2\n",acum);
-                        printf("El promedio de los salarios es %f.2\n",promSalaries);
+                        printf("El total de los salarios es %.2f\n",acum);
+                        printf("El promedio de los salarios es %.2f\n",promSalaries);
                         printf("La cantidad de empleados que supera el salario promedio es %d\n",contPromEmployees);
                     }
                     else{
@@ -356,11 +350,9 @@ int informEmployeesAndAverageSalary(Employee* list, int len){
             retorno = 0;
 		}
     }
-    while(rta <= 3);
+    while(rta != 3);
     return retorno;
 }
-
-
 
 
 

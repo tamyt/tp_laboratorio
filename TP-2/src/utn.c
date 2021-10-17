@@ -4,7 +4,7 @@
 #include <string.h>
 #include "utn.h"
 
-int esNumerica(char* cadena)// char cadena[]
+int esNumerica(char* cadena)
 {
     int i=0;
     int retorno = 1;
@@ -23,7 +23,7 @@ int esNumerica(char* cadena)// char cadena[]
     return retorno;
 }
 
- int esSoloLetras(char* cadena, int longitud)// char cadena[]
+ int esSoloLetras(char* cadena, int longitud)
 {
     int i=0;
     int retorno = 1;

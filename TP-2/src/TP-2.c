@@ -3,7 +3,7 @@
 #include "utn.h"
 #include "ArrayEmployees.h"
 
-#define QTY 1000
+#define QTY 3
 
 int main()
 {
@@ -17,9 +17,10 @@ int main()
 
     Employee ArrayEmployees[QTY];
 
+
 	do{
-        if(utn_getNumero(&rta, "\n1.Altas \n2.Modificar \n3.Baja \n4.Informar\n",
-            "Opción inválida\n\n", 1, 4, 2) == 0){
+        if(utn_getNumero(&rta, "\n1.Altas \n2.Modificar \n3.Baja \n4.Informar\n5.Salir\n",
+            "Opción inválida\n\n", 1, 5, 2) == 0){
             switch(rta){
                 case 1:
                     printf("Ud. ha seleccionado la opción 1-Alta \n\n");
@@ -80,7 +81,7 @@ int main()
             }
 		}
     }
-    while(rta <= 4);
+    while(rta != 5);
 
     return 0;
 }

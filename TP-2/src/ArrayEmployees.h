@@ -1,7 +1,6 @@
 #ifndef ARRAYEMPLOYEES_H_
 #define ARRAYEMPLOYEES_H_
 #include <stdlib.h>
-//#include <stdio_ext.h>
 #include <string.h>
 #include <stdio.h>
 #include "utn.h"
